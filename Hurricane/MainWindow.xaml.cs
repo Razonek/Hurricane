@@ -240,7 +240,7 @@ namespace Hurricane
         public string TriggerbotToggleBindName
         {
             get { return _TriggerbotToggleBindName; }
-            private set
+            set
             {
                 _TriggerbotToggleBindName = value;
                 OnPropertyChanged("TriggerbotToggleBindName");
@@ -251,7 +251,7 @@ namespace Hurricane
         public string WallhackToggleBindName
         {
             get { return _WallhackToggleBindName; }
-            private set
+            set
             {
                 _WallhackToggleBindName = value;
                 OnPropertyChanged("WallhackToggleBindName");
@@ -262,7 +262,7 @@ namespace Hurricane
         public string NoFlashToggleBindName
         {
             get { return _NoFlashToggleBindName; }
-            private set
+            set
             {
                 _NoFlashToggleBindName = value;
                 OnPropertyChanged("NoFlashToggleBindName");
@@ -273,7 +273,7 @@ namespace Hurricane
         public string BunnyhopBindName
         {
             get { return _BunnyhopBindName; }
-            private set
+            set
             {
                 _BunnyhopBindName = value;
                 OnPropertyChanged("BunnyhopBindName");
@@ -285,23 +285,23 @@ namespace Hurricane
 
 
 
-        public bool AllowedPistols { get; private set; }
-        public bool AllowedShotguns { get; private set; }
-        public bool AllowedAWP { get; private set; }
-        public bool AllowedRifles { get; private set; }
-        public bool AllowedSMGs { get; private set; }
-        public bool AllowedNoobsWeapons { get; private set; }
-        public bool AllowedQuickScope { get; private set; }
-        public bool AllowedSwapWeapon { get; private set; }
-        public bool AllowedAimImprove { get; private set; }
-        public bool FriendlyWallhack { get; private set; }
+        public bool AllowedPistols { get; set; }
+        public bool AllowedShotguns { get; set; }
+        public bool AllowedAWP { get; set; }
+        public bool AllowedRifles { get; set; }
+        public bool AllowedSMGs { get; set; }
+        public bool AllowedNoobsWeapons { get; set; }
+        public bool AllowedQuickScope { get; set; }
+        public bool AllowedSwapWeapon { get; set; }
+        public bool AllowedAimImprove { get; set; }
+        public bool FriendlyWallhack { get; set; }
 
         private bool IsButtonBindingUnderEdit { get; set; }
         private BindingKey ButtonUnderEdit { get; set; }
-        public int TriggerbotToggleBindKey { get; private set; }
-        public int WallhackToggleBindKey { get; private set; }
-        public int NoFlashToggleBindKey { get; private set; }
-        public int BunnyhopBindKey { get; private set; }
+        public int TriggerbotToggleBindKey { get; set; }
+        public int WallhackToggleBindKey { get; set; }
+        public int NoFlashToggleBindKey { get; set; }
+        public int BunnyhopBindKey { get; set; }
         #endregion
 
         public MainWindow()
@@ -312,12 +312,14 @@ namespace Hurricane
             DetectionChance = "UNDETECTED";
             MenuGeneralButton.RaiseEvent(new RoutedEventArgs(Button.ClickEvent));
             KeyDown += new KeyEventHandler(KeyPressKeyBind);
+            Settings.LoadSettings();
 
         }
 
         #region WindowBar
         private void CloseWindow_Click(object sender, RoutedEventArgs e)
         {
+            Settings.SaveSettings();
             this.Close();
         }
 

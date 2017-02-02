@@ -266,7 +266,7 @@
 
 
             <!--Settings -->
-            <Grid x:Name="SettingsGrid" Grid.Column="1" Style="{StaticResource Color}" >
+            <Grid x:Name="SettingsGrid" Grid.Column="1" Style="{StaticResource Color}" Visibility="Hidden" >
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="1*"/>
                     <ColumnDefinition Width="1*"/>
