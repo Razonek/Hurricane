@@ -67,6 +67,21 @@
             <Setter Property="TickFrequency" Value="15"/>
         </Style>
         
+        <!--Labels in OTHER-->
+        <Style TargetType="Label" x:Key="ImproveLabel">
+            <Setter Property="FontSize" Value="11"/>
+            <Setter Property="FontFamily" Value="Xirod"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+        </Style>
+        
+        <!--Setting Button-->
+        <Style TargetType="Button" x:Key="SettingButton">
+            <Setter Property="Height" Value="35"/>
+            <Setter Property="Width" Value="70"/>
+            
+        </Style>
+        
     </Window.Resources>
     
     <Grid >
@@ -186,7 +201,7 @@
 
             
             <!--Wallhack-->
-            <Grid x:Name="WallhackGrid" Grid.Column="1" Style="{StaticResource Color}">
+            <Grid x:Name="WallhackGrid" Grid.Column="1" Style="{StaticResource Color}" Visibility="Hidden">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition/>
                     <ColumnDefinition/>
@@ -221,16 +236,65 @@
                     <Rectangle x:Name="FriendRect" Width="30" Height="30" Fill="{Binding FriendColorPresentation}"/>
                 </StackPanel>
 
-
-
             </Grid>
-
+            
+            
+                <!--Other part -->
             <Grid x:Name="OtherGrid" Grid.Column="1" Style="{StaticResource Color}" Visibility="Hidden">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="1*"/>
+                    <ColumnDefinition Width="5*"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="2*"/>
+                    <RowDefinition Height="1*"/>
+                    <RowDefinition Height="1*"/>
+                    <RowDefinition Height="1*"/>
+                    <RowDefinition Height="2*"/>
+                </Grid.RowDefinitions>
                 
+                <CheckBox x:Name="QuickScopeCheckbox" Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Right" Click="QuickScopeCheckbox_Click"/>
+                <CheckBox x:Name="ReloadChangeCheckbox" Grid.Row="2" VerticalAlignment="Center" HorizontalAlignment="Right" Click="ReloadChangeCheckbox_Click"/>
+                <CheckBox x:Name="AccuracyImproveCheckbox" Grid.Row="3" VerticalAlignment="Center" HorizontalAlignment="Right" Click="AccuracyImproveCheckbox_Click"/>
+
+                <Label Content="Quick Scoping" Grid.Row="1" Grid.Column="1" Style="{StaticResource ImproveLabel}"/>
+                <Label Content="Change weapon after reload" Grid.Row="2" Grid.Column="1" Style="{StaticResource ImproveLabel}"/>
+                <Label Content="Improve accuracy when crouching" Grid.Row="3" Grid.Column="1" Style="{StaticResource ImproveLabel}"/>
+
             </Grid>
 
-            <Grid x:Name="SettingsGrid" Grid.Column="1" Style="{StaticResource Color}" Visibility="Hidden">
-                
+
+
+            <!--Settings -->
+            <Grid x:Name="SettingsGrid" Grid.Column="1" Style="{StaticResource Color}" >
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="1*"/>
+                    <ColumnDefinition Width="1*"/>
+                    <ColumnDefinition Width="1*"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="1*"/>
+                    <RowDefinition Height="1*"/>
+                    <RowDefinition Height="1*"/>
+                    <RowDefinition Height="1*"/>
+                    <RowDefinition Height="1*"/>
+                    <RowDefinition Height="1*"/>
+                    <RowDefinition Height="1*"/>
+                </Grid.RowDefinitions>
+                <Button x:Name="TriggerbotKey" Grid.Row="1" Style="{StaticResource SettingButton}" Content="{Binding TriggerbotToggleBindName}" Click="TriggerbotKey_Click"/>
+                <Button x:Name="WallhackKey" Grid.Row="2" Style="{StaticResource SettingButton}" Content="{Binding WallhackToggleBindName}" Click="WallhackKey_Click"/>
+                <Button x:Name="NoFlashKey" Grid.Row="3" Style="{StaticResource SettingButton}" Content="{Binding NoFlashToggleBindName}" Click="NoFlashKey_Click"/>
+                <Button x:Name="BunnyhopKey" Grid.Row="4" Style="{StaticResource SettingButton}" Content="{Binding BunnyhopBindName}" Click="BunnyhopKey_Click"/>
+                <CheckBox x:Name="FriendlyWallhackCheckbox" Grid.Row="5" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="10" Click="FriendlyWallhackCheckbox_Click"/>
+
+                <Label Content="Toggle Triggerbot" Grid.Row="1" Grid.Column="1" Style="{StaticResource ImproveLabel}" FontFamily="Tekton Pro" FontSize="14"/>
+                <Label Content="Toggle Wallhack" Grid.Row="2" Grid.Column="1" Style="{StaticResource ImproveLabel}" FontFamily="Tekton Pro" FontSize="14"/>
+                <Label Content="Toggle No Flash" Grid.Row="3" Grid.Column="1" Style="{StaticResource ImproveLabel}" FontFamily="Tekton Pro" FontSize="14"/>
+                <Label Content="Bunnyhop bind" Grid.Row="4" Grid.Column="1" Style="{StaticResource ImproveLabel}" FontFamily="Tekton Pro" FontSize="14"/>
+                <Label Content="Friendly Wallhack" Grid.Row="5" Grid.Column="1" Style="{StaticResource ImproveLabel}" FontFamily="Tekton Pro" FontSize="14"/>
+
+                <Button x:Name="GetOffsetsButton" Content="Get Offsets" Grid.Row="6" Grid.Column="2" Height="30" Width="70" Click="GetOffsetsButton_Click"/>
+
             </Grid>
             
             

@@ -22,6 +22,7 @@ namespace Hurricane
 
         SolidColorBrush CustomBlue = new SolidColorBrush(Color.FromRgb((byte)0, (byte)122, (byte)204));
 
+        #region Variables
         private SolidColorBrush _EnemyColorPresentation;
         public SolidColorBrush EnemyColorPresentation
         {
@@ -235,7 +236,51 @@ namespace Hurricane
             }
         }
 
+        private string _TriggerbotToggleBindName;
+        public string TriggerbotToggleBindName
+        {
+            get { return _TriggerbotToggleBindName; }
+            private set
+            {
+                _TriggerbotToggleBindName = value;
+                OnPropertyChanged("TriggerbotToggleBindName");
+            }
+        }
 
+        private string _WallhackToggleBindName;
+        public string WallhackToggleBindName
+        {
+            get { return _WallhackToggleBindName; }
+            private set
+            {
+                _WallhackToggleBindName = value;
+                OnPropertyChanged("WallhackToggleBindName");
+            }
+        }
+
+        private string _NoFlashToggleBindName;
+        public string NoFlashToggleBindName
+        {
+            get { return _NoFlashToggleBindName; }
+            private set
+            {
+                _NoFlashToggleBindName = value;
+                OnPropertyChanged("NoFlashToggleBindName");
+            }
+        }
+
+        private string _BunnyhopBindName;
+        public string BunnyhopBindName
+        {
+            get { return _BunnyhopBindName; }
+            private set
+            {
+                _BunnyhopBindName = value;
+                OnPropertyChanged("BunnyhopBindName");
+            }
+        }
+
+        
 
 
 
@@ -246,11 +291,18 @@ namespace Hurricane
         public bool AllowedRifles { get; private set; }
         public bool AllowedSMGs { get; private set; }
         public bool AllowedNoobsWeapons { get; private set; }
+        public bool AllowedQuickScope { get; private set; }
+        public bool AllowedSwapWeapon { get; private set; }
+        public bool AllowedAimImprove { get; private set; }
+        public bool FriendlyWallhack { get; private set; }
 
-
-
-
-
+        private bool IsButtonBindingUnderEdit { get; set; }
+        private BindingKey ButtonUnderEdit { get; set; }
+        public int TriggerbotToggleBindKey { get; private set; }
+        public int WallhackToggleBindKey { get; private set; }
+        public int NoFlashToggleBindKey { get; private set; }
+        public int BunnyhopBindKey { get; private set; }
+        #endregion
 
         public MainWindow()
         {
@@ -259,6 +311,7 @@ namespace Hurricane
             CurrentlyOnline = 17;
             DetectionChance = "UNDETECTED";
             MenuGeneralButton.RaiseEvent(new RoutedEventArgs(Button.ClickEvent));
+            KeyDown += new KeyEventHandler(KeyPressKeyBind);
 
         }
 
@@ -445,5 +498,117 @@ namespace Hurricane
             BlueFriend = (float)BlueFriendSlider.Value;
         }
         #endregion
+
+        #region Other Cheats Grid
+        private void QuickScopeCheckbox_Click(object sender, RoutedEventArgs e)
+        {
+            if (QuickScopeCheckbox.IsChecked == true)
+                AllowedQuickScope = true;
+            else
+                AllowedQuickScope = false;
+        }
+
+        private void ReloadChangeCheckbox_Click(object sender, RoutedEventArgs e)
+        {
+            if (ReloadChangeCheckbox.IsChecked == true)
+                AllowedSwapWeapon = true;
+            else
+                AllowedSwapWeapon = false;
+        }
+
+        private void AccuracyImproveCheckbox_Click(object sender, RoutedEventArgs e)
+        {
+            if (AccuracyImproveCheckbox.IsChecked == true)
+                AllowedAimImprove = true;
+            else
+                AllowedAimImprove = false;
+        }
+        #endregion
+
+
+        private void KeyPressKeyBind(object sender, KeyEventArgs e)
+        {
+            if(IsButtonBindingUnderEdit)
+            {
+                switch(ButtonUnderEdit)
+                {
+                    case BindingKey.Triggerbot:
+                        TriggerbotToggleBindName = e.Key.ToString();
+                        TriggerbotToggleBindKey = KeyInterop.VirtualKeyFromKey(e.Key);
+                        break;
+
+                    case BindingKey.Wallhack:
+                        WallhackToggleBindName = e.Key.ToString();
+                        WallhackToggleBindKey = KeyInterop.VirtualKeyFromKey(e.Key);
+                        break;
+
+                    case BindingKey.NoFlash:
+                        NoFlashToggleBindName = e.Key.ToString();
+                        NoFlashToggleBindKey = KeyInterop.VirtualKeyFromKey(e.Key);
+                        break;
+
+                    case BindingKey.Bunnyhop:
+                        BunnyhopBindName = e.Key.ToString();
+                        BunnyhopBindKey = KeyInterop.VirtualKeyFromKey(e.Key);
+                        break;
+                }
+                IsButtonBindingUnderEdit = false;
+            }
+        }
+
+
+
+
+
+        #region Settings Grid
+
+        private enum BindingKey
+        {
+            Triggerbot,
+            Wallhack,
+            NoFlash,
+            Bunnyhop
+        }
+
+        private void TriggerbotKey_Click(object sender, RoutedEventArgs e)
+        {
+            IsButtonBindingUnderEdit = true;
+            ButtonUnderEdit = BindingKey.Triggerbot;
+
+        }
+
+        private void WallhackKey_Click(object sender, RoutedEventArgs e)
+        {
+            IsButtonBindingUnderEdit = true;
+            ButtonUnderEdit = BindingKey.Wallhack;
+        }
+
+        private void NoFlashKey_Click(object sender, RoutedEventArgs e)
+        {
+            IsButtonBindingUnderEdit = true;
+            ButtonUnderEdit = BindingKey.NoFlash;
+        }
+
+        private void BunnyhopKey_Click(object sender, RoutedEventArgs e)
+        {
+            IsButtonBindingUnderEdit = true;
+            ButtonUnderEdit = BindingKey.Bunnyhop;
+        }
+                
+
+        private void FriendlyWallhackCheckbox_Click(object sender, RoutedEventArgs e)
+        {
+            if (FriendlyWallhackCheckbox.IsChecked == true)
+                FriendlyWallhack = true;
+            else
+                FriendlyWallhack = false;
+        }
+
+        private void GetOffsetsButton_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+        #endregion
+
     }
 }
