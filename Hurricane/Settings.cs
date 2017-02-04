@@ -14,13 +14,13 @@ namespace Hurricane
         {
             // Bind keys 
             Properties.Settings.Default.TriggerbotToggleBindName = ((MainWindow)Application.Current.MainWindow).TriggerbotToggleBindName;
-            Properties.Settings.Default.TriggerbotToggleBindKey = ((MainWindow)Application.Current.MainWindow).TriggerbotToggleBindKey;
+            Properties.Settings.Default.TriggerbotToggleBindKey = MainWindow.TriggerbotToggleBindKey;
             Properties.Settings.Default.WallhackToggleBindName = ((MainWindow)Application.Current.MainWindow).WallhackToggleBindName;
-            Properties.Settings.Default.WallhackToggleBindKey = ((MainWindow)Application.Current.MainWindow).WallhackToggleBindKey;
+            Properties.Settings.Default.WallhackToggleBindKey = MainWindow.WallhackToggleBindKey;
             Properties.Settings.Default.NoFlashToggleBindName = ((MainWindow)Application.Current.MainWindow).NoFlashToggleBindName;
-            Properties.Settings.Default.NoFlashToggleBindKey = ((MainWindow)Application.Current.MainWindow).NoFlashToggleBindKey;
+            Properties.Settings.Default.NoFlashToggleBindKey = MainWindow.NoFlashToggleBindKey;
             Properties.Settings.Default.BunnyhopBindName = ((MainWindow)Application.Current.MainWindow).BunnyhopBindName;
-            Properties.Settings.Default.BunnyhopBindKey = ((MainWindow)Application.Current.MainWindow).BunnyhopBindKey;
+            Properties.Settings.Default.BunnyhopBindKey = MainWindow.BunnyhopBindKey;
 
             // Wallhack Settings
             Properties.Settings.Default.RedEnemy = ((MainWindow)Application.Current.MainWindow).RedEnemy;
@@ -53,13 +53,13 @@ namespace Hurricane
         public static void LoadSettings()
         {
             // Setting bind keys
-            ((MainWindow)Application.Current.MainWindow).TriggerbotToggleBindKey = Properties.Settings.Default.TriggerbotToggleBindKey;
+            MainWindow.TriggerbotToggleBindKey = Properties.Settings.Default.TriggerbotToggleBindKey;
             ((MainWindow)Application.Current.MainWindow).TriggerbotToggleBindName = Properties.Settings.Default.TriggerbotToggleBindName;
-            ((MainWindow)Application.Current.MainWindow).WallhackToggleBindKey = Properties.Settings.Default.WallhackToggleBindKey;
+            MainWindow.WallhackToggleBindKey = Properties.Settings.Default.WallhackToggleBindKey;
             ((MainWindow)Application.Current.MainWindow).WallhackToggleBindName = Properties.Settings.Default.WallhackToggleBindName;
-            ((MainWindow)Application.Current.MainWindow).NoFlashToggleBindKey = Properties.Settings.Default.NoFlashToggleBindKey;
+            MainWindow.NoFlashToggleBindKey = Properties.Settings.Default.NoFlashToggleBindKey;
             ((MainWindow)Application.Current.MainWindow).NoFlashToggleBindName = Properties.Settings.Default.NoFlashToggleBindName;
-            ((MainWindow)Application.Current.MainWindow).BunnyhopBindKey = Properties.Settings.Default.BunnyhopBindKey;
+            MainWindow.BunnyhopBindKey = Properties.Settings.Default.BunnyhopBindKey;
             ((MainWindow)Application.Current.MainWindow).BunnyhopBindName = Properties.Settings.Default.BunnyhopBindName;
 
             // Setting Wallhack sliders + friendly wh -> update variables on value change event

@@ -13,6 +13,8 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.ComponentModel;
+using System.Windows.Threading;
+using System.Threading;
 
 namespace Hurricane
 {
@@ -21,6 +23,21 @@ namespace Hurricane
     {
 
         SolidColorBrush CustomBlue = new SolidColorBrush(Color.FromRgb((byte)0, (byte)122, (byte)204));
+        private Tuple<int, string> serverData;
+        DispatcherTimer Update = new DispatcherTimer();
+        Connection ServerSide = new Connection();
+        
+
+
+        public event PropertyChangedEventHandler PropertyChanged;
+        private void OnPropertyChanged(string propertyName)
+        {
+            PropertyChangedEventHandler propertyChanged = PropertyChanged;
+            if (propertyChanged != null)
+                propertyChanged(this, new PropertyChangedEventArgs(propertyName));
+        }
+
+
 
         #region Variables
         private SolidColorBrush _EnemyColorPresentation;
@@ -46,17 +63,7 @@ namespace Hurricane
             }
         }
 
-
-
-        public event PropertyChangedEventHandler PropertyChanged;
-        private void OnPropertyChanged(string propertyName)
-        {
-            PropertyChangedEventHandler propertyChanged = PropertyChanged;
-            if (propertyChanged != null)
-                propertyChanged(this, new PropertyChangedEventArgs(propertyName));
-        }
-
-
+        
 
         private bool _ToggleTriggerbot;
         public bool ToggleTriggerbot
@@ -298,28 +305,66 @@ namespace Hurricane
 
         private bool IsButtonBindingUnderEdit { get; set; }
         private BindingKey ButtonUnderEdit { get; set; }
-        public int TriggerbotToggleBindKey { get; set; }
-        public int WallhackToggleBindKey { get; set; }
-        public int NoFlashToggleBindKey { get; set; }
-        public int BunnyhopBindKey { get; set; }
+        public static int TriggerbotToggleBindKey { get; set; }
+        public static int WallhackToggleBindKey { get; set; }
+        public static int NoFlashToggleBindKey { get; set; }
+        public static int BunnyhopBindKey { get; set; }
+
+        public static bool InjectorThread { get; private set; }
+        Thread ThreadInjector;
+        Thread ThreadBunnyHop;
+
         #endregion
 
         public MainWindow()
         {
             InitializeComponent();
-            this.DataContext = this;
-            CurrentlyOnline = 17;
-            DetectionChance = "UNDETECTED";
             MenuGeneralButton.RaiseEvent(new RoutedEventArgs(Button.ClickEvent));
-            KeyDown += new KeyEventHandler(KeyPressKeyBind);
             Settings.LoadSettings();
+            Offsets.LoadOffsetsFromFile();
+            this.DataContext = this;
+            KeyDown += new KeyEventHandler(KeyPressKeyBind);
+            Update.Interval = new TimeSpan(0, 1, 0);
+            Update.Tick += new EventHandler(Update_tick);
+            Update.Start();
+            ServerSide.ServerInfo(Connection.ConnectionType.Login);
+            serverData = Parser.ParseRequest(ServerSide.ServerInfo(Connection.ConnectionType.Status));
+            CurrentlyOnline = serverData.Item1;
+            DetectionChance = serverData.Item2;
+
+            ThreadInjector = new Thread(AutoInjector.Inject);
+            InjectorThread = true;
+            ThreadInjector.Start();
+
+            
+
+
+
+
+
 
         }
+
+        #region Update DispatcherTimer Tick
+        private void Update_tick(object sender, EventArgs e)
+        {
+            serverData = Parser.ParseRequest(ServerSide.ServerInfo(Connection.ConnectionType.Status));
+            CurrentlyOnline = serverData.Item1;
+            DetectionChance = serverData.Item2;
+        }
+        #endregion
 
         #region WindowBar
         private void CloseWindow_Click(object sender, RoutedEventArgs e)
         {
             Settings.SaveSettings();
+            ServerSide.ServerInfo(Connection.ConnectionType.Logout);
+            InjectorThread = false;
+            ThreadValues.Triggerbot = false;
+            ThreadValues.Wallhack = false;
+            ThreadValues.NoFlash = false;
+            ThreadValues.BunnyHop = false;
+            Update.Stop();
             this.Close();
         }
 
@@ -340,7 +385,10 @@ namespace Hurricane
             if (ToggleTriggerbot)
                 ToggleTriggerbot = false;
             else
+            {
                 ToggleTriggerbot = true;
+            }
+                
         }
 
         private void ToggleWallhackButton_Click(object sender, RoutedEventArgs e)
@@ -362,9 +410,19 @@ namespace Hurricane
         private void ToggleBunnyhopButton_Click(object sender, RoutedEventArgs e)
         {
             if (ToggleBunnyhop)
+            {
                 ToggleBunnyhop = false;
+                ThreadValues.BunnyHop = false; 
+            }
+                
             else
+            {
                 ToggleBunnyhop = true;
+                ThreadValues.BunnyHop = true;
+                ThreadBunnyHop = new Thread(BunnyHop.GetJump);
+                ThreadBunnyHop.Start();
+            }
+                
         }
         #endregion
 
@@ -527,7 +585,7 @@ namespace Hurricane
         }
         #endregion
 
-
+        #region KeyBinding
         private void KeyPressKeyBind(object sender, KeyEventArgs e)
         {
             if(IsButtonBindingUnderEdit)
@@ -557,11 +615,8 @@ namespace Hurricane
                 IsButtonBindingUnderEdit = false;
             }
         }
-
-
-
-
-
+        #endregion
+        
         #region Settings Grid
 
         private enum BindingKey
@@ -576,6 +631,7 @@ namespace Hurricane
         {
             IsButtonBindingUnderEdit = true;
             ButtonUnderEdit = BindingKey.Triggerbot;
+            TriggerbotToggleBindName = "Bind";
 
         }
 
@@ -583,18 +639,21 @@ namespace Hurricane
         {
             IsButtonBindingUnderEdit = true;
             ButtonUnderEdit = BindingKey.Wallhack;
+            WallhackToggleBindName = "Bind";
         }
 
         private void NoFlashKey_Click(object sender, RoutedEventArgs e)
         {
             IsButtonBindingUnderEdit = true;
             ButtonUnderEdit = BindingKey.NoFlash;
+            NoFlashToggleBindName = "Bind";
         }
 
         private void BunnyhopKey_Click(object sender, RoutedEventArgs e)
         {
             IsButtonBindingUnderEdit = true;
             ButtonUnderEdit = BindingKey.Bunnyhop;
+            BunnyhopBindName = "Bind";
         }
                 
 

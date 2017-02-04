@@ -55,7 +55,14 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="AutoInjector.cs" />
+    <Compile Include="BunnyHop.cs" />
+    <Compile Include="Connection.cs" />
+    <Compile Include="Game.cs" />
+    <Compile Include="Offsets.cs" />
+    <Compile Include="Parser.cs" />
     <Compile Include="Settings.cs" />
+    <Compile Include="ThreadValues.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
