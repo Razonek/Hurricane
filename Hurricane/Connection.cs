@@ -11,13 +11,17 @@ using System.Windows;
 
 namespace Hurricane
 {
+
+    /// <summary>
+    /// Simple request to server
+    /// </summary>
     public class Connection
     {
 
-        ASCIIEncoding Encoding = new ASCIIEncoding();
-        
+        ASCIIEncoding Encoding = new ASCIIEncoding();        
         
 
+        
         public enum ConnectionType
         {
             Login,
@@ -26,6 +30,11 @@ namespace Hurricane
         }
            
         
+        /// <summary>
+        /// Sending request to my server
+        /// </summary>
+        /// <param name="Type"> Possible request values </param>
+        /// <returns> Returning server response as string </returns>
         public string ServerInfo(ConnectionType Type)
         {
 

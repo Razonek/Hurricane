@@ -7,6 +7,9 @@ using System.Text.RegularExpressions;
 
 namespace Hurricane
 {
+    /// <summary>
+    /// Parsing server response
+    /// </summary>
     public static class Parser
     {
 
@@ -14,9 +17,13 @@ namespace Hurricane
         private static string regexForDetectionChance = @"[a-z]{8,10}";
         private static Tuple<int, string> requestOutput;
 
-        public static Tuple<int,string> ParseRequest(string callBack)
+        /// <summary>
+        /// Parsing connection output
+        /// </summary>
+        /// <param name="callBack"> server response </param>
+        /// <returns> Tuple item1 = onlineplayers as int, item2 = detection chance as string </returns>
+        public static Tuple<int,string> ParseResponse(string callBack)
         {
-
             if (callBack != null && callBack != String.Empty)
             {
                 Match onlineCount = Regex.Match(callBack, regexForOnlineCount);

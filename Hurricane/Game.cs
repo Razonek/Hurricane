@@ -7,8 +7,12 @@ using System.Threading.Tasks;
 
 namespace Hurricane
 {
+    /// <summary>
+    /// Everything what we use in game, binds, memory read, key events
+    /// </summary>
     public class Game
     {
+        
         [DllImport("kernel32.dll")]
         public static extern int OpenProcess(uint dwDesiredAccess, bool bInheritHandle, int dwProcessId);
 
@@ -29,6 +33,12 @@ namespace Hurricane
 
         public static int KEYEVENTF_KEYUP = 0x0002;
 
+
+        /// <summary>
+        /// Reading game memory
+        /// </summary>
+        /// <param name="Value"> game offset to read </param>
+        /// <returns> readed value at this memory point </returns>
         public static int Read(int Value)
         {
             byte[] buffer = new byte[4];

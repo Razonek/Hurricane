@@ -10,11 +10,16 @@ using System.Windows.Threading;
 
 namespace Hurricane
 {
+
+    /// <summary>
+    /// Class responsible for auto jumping when player touch ground while pressing bind key
+    /// </summary>
     public static class BunnyHop
     {
 
-        
-
+         /// <summary>
+         /// Turning on bunnyhop
+         /// </summary>
         public static void GetJump()
         {
                            
@@ -30,15 +35,19 @@ namespace Hurricane
                     }
                 }
                 else
-                    Thread.Sleep(50);
-                
+                    Thread.Sleep(50);                
             }            
         }
-        
 
 
+
+        /// <summary>
+        /// Getting player statement, 257 = ground, 256 = air
+        /// </summary>
         private static int GetFlag()
         {
+            
+
             int Player = Game.Read(AutoInjector.BaseAddressClientDLL + Offsets.m_dwLocalPlayer);
             return Game.Read(Player + Offsets.m_fFlags);
         }

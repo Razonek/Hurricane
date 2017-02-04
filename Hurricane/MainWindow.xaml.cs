@@ -1,24 +1,33 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 using System.ComponentModel;
 using System.Windows.Threading;
 using System.Threading;
 
 namespace Hurricane
 {
-    
+    /// <summary>
+    /// Cheat for Counter Strike Global Offensive
+    /// 
+    /// Implemented solutions:
+    /// -Triggerbot,
+    /// -Simple Wallhack(glow),
+    /// -No Flash,
+    /// -Bunnyhop.
+    /// 
+    /// To implement:
+    /// -Patter scanner.
+    /// 
+    /// Meybe:
+    /// Directx Hook.
+    /// 
+    /// 
+    /// C#,MySQL Developer: Razonek
+    /// PHP Developer: Rolowy
+    /// </summary>    
     public partial class MainWindow : Window, INotifyPropertyChanged
     {
 
@@ -38,7 +47,9 @@ namespace Hurricane
         }
 
 
-
+        /// <summary>
+        /// Storing variables used in UI and for starting threads 
+        /// </summary>
         #region Variables
         private SolidColorBrush _EnemyColorPresentation;
         public SolidColorBrush EnemyColorPresentation
@@ -319,20 +330,20 @@ namespace Hurricane
         public MainWindow()
         {
             InitializeComponent();
-            MenuGeneralButton.RaiseEvent(new RoutedEventArgs(Button.ClickEvent));
-            Settings.LoadSettings();
-            Offsets.LoadOffsetsFromFile();
-            this.DataContext = this;
-            KeyDown += new KeyEventHandler(KeyPressKeyBind);
-            Update.Interval = new TimeSpan(0, 1, 0);
+            MenuGeneralButton.RaiseEvent(new RoutedEventArgs(Button.ClickEvent));  // Setting startup UI as GeneralGrid
+            Settings.LoadSettings();                                               // Loading user settings used before
+            Offsets.LoadOffsetsFromFile();                                         // Loading offsets from file
+            this.DataContext = this;                                               // UI Bindings
+            KeyDown += new KeyEventHandler(KeyPressKeyBind);                       // Key press event, used for binding keys
+            Update.Interval = new TimeSpan(0, 1, 0);                               // Update timer, once per minute taking info from server
             Update.Tick += new EventHandler(Update_tick);
             Update.Start();
-            ServerSide.ServerInfo(Connection.ConnectionType.Login);
-            serverData = Parser.ParseRequest(ServerSide.ServerInfo(Connection.ConnectionType.Status));
-            CurrentlyOnline = serverData.Item1;
-            DetectionChance = serverData.Item2;
+            ServerSide.ServerInfo(Connection.ConnectionType.Login);                // Adding one player to counter
+            serverData = Parser.ParseResponse(ServerSide.ServerInfo(Connection.ConnectionType.Status)); // Getting current status
+            CurrentlyOnline = serverData.Item1;                                    // Setting count of online people
+            DetectionChance = serverData.Item2;                                    // Setting detection chance
 
-            ThreadInjector = new Thread(AutoInjector.Inject);
+            ThreadInjector = new Thread(AutoInjector.Inject);                      // Starting thread which one search csgo and inject or re-inject
             InjectorThread = true;
             ThreadInjector.Start();
 
@@ -345,15 +356,23 @@ namespace Hurricane
 
         }
 
+
+        /// <summary>
+        /// Timer to update currently online players and detection chance
+        /// </summary>        
         #region Update DispatcherTimer Tick
         private void Update_tick(object sender, EventArgs e)
         {
-            serverData = Parser.ParseRequest(ServerSide.ServerInfo(Connection.ConnectionType.Status));
+            serverData = Parser.ParseResponse(ServerSide.ServerInfo(Connection.ConnectionType.Status));
             CurrentlyOnline = serverData.Item1;
             DetectionChance = serverData.Item2;
         }
         #endregion
 
+
+        /// <summary>
+        /// Custom WindowBar and his handling
+        /// </summary>        
         #region WindowBar
         private void CloseWindow_Click(object sender, RoutedEventArgs e)
         {
@@ -379,6 +398,10 @@ namespace Hurricane
         }
         #endregion
 
+
+        /// <summary>
+        /// ToggleButtons to toggle cheat solutions, setting correct values and start threads
+        /// </summary>        
         #region ToggleButtons
         private void ToggleTriggerbotButton_Click(object sender, RoutedEventArgs e)
         {
@@ -386,6 +409,7 @@ namespace Hurricane
                 ToggleTriggerbot = false;
             else
             {
+                
                 ToggleTriggerbot = true;
             }
                 
@@ -426,6 +450,10 @@ namespace Hurricane
         }
         #endregion
 
+
+        /// <summary>
+        /// Setting correct Grids and colors after clicking chosen button
+        /// </summary>        
         #region ChangeContent
         private void ChangeGridContent(Grid Set,Button Pressed)
         {
@@ -471,6 +499,9 @@ namespace Hurricane
         }
         #endregion
 
+        /// <summary>
+        /// Setting Triggerbot options
+        /// </summary>        
         #region Triggerbot Variable Changers
         private void ReactionTimeSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
@@ -527,6 +558,9 @@ namespace Hurricane
         }
         #endregion
 
+        /// <summary>
+        /// Setting Wallhack output colors
+        /// </summary>        
         #region Color Selection Sliders
         private void RedEnemySlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
@@ -559,6 +593,9 @@ namespace Hurricane
         }
         #endregion
 
+        /// <summary>
+        /// Other stuff
+        /// </summary>
         #region Other Cheats Grid
         private void QuickScopeCheckbox_Click(object sender, RoutedEventArgs e)
         {
@@ -585,6 +622,9 @@ namespace Hurricane
         }
         #endregion
 
+        /// <summary>
+        /// Binding keys for use in game
+        /// </summary>
         #region KeyBinding
         private void KeyPressKeyBind(object sender, KeyEventArgs e)
         {
@@ -617,6 +657,9 @@ namespace Hurricane
         }
         #endregion
         
+        /// <summary>
+        /// Rest of settings, handling buttons
+        /// </summary>
         #region Settings Grid
 
         private enum BindingKey

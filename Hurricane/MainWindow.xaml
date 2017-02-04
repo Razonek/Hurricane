@@ -39,11 +39,7 @@
             <Setter Property="Height" Value="50"/>
             <Setter Property="BorderBrush" Value="Black"/>
             <Setter Property="Foreground" Value="White"/>
-        </Style>
-
-        <Style TargetType="Grid" x:Key="Color">
-            <Setter Property="Background" Value="DarkGray"/>
-        </Style>
+        </Style>        
         
         <!-- Buttons as Togglebuttons-->
         <Style TargetType="Button" x:Key="Toggle">
@@ -73,6 +69,7 @@
             <Setter Property="FontFamily" Value="Xirod"/>
             <Setter Property="Foreground" Value="White"/>
             <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="Foreground" Value="White"/>
         </Style>
         
         <!--Setting Button-->
@@ -129,7 +126,10 @@
             </StackPanel>
 
 
-            <Grid x:Name="GeneralGrid" Grid.Column="1" Style="{StaticResource Color}" Visibility="Hidden">
+            <Grid x:Name="GeneralGrid" Grid.Column="1">
+                <Grid.Background>
+                    <ImageBrush ImageSource="Pictures/background.png" Stretch="Uniform"/>
+                </Grid.Background>
                 <StackPanel HorizontalAlignment="Left" Margin="25">
                     <Button x:Name="ToggleTriggerbotButton" Content="Triggerbot" Style="{StaticResource Toggle}" Click="ToggleTriggerbotButton_Click"/>
                     <Separator Height="5" Visibility="Hidden"/>
@@ -140,14 +140,17 @@
                     <Button x:Name="ToggleBunnyhopButton" Content="Bunnyhop" Style="{StaticResource Toggle}" Click="ToggleBunnyhopButton_Click" />
                 </StackPanel>
                 <StackPanel Orientation="Horizontal" VerticalAlignment="Bottom" Margin="5">
-                    <Label Content="Online:" FontSize="14" FontFamily="Crysis"/>
-                    <TextBlock x:Name="OnlineCounter" Text="{Binding CurrentlyOnline}" VerticalAlignment="Center" FontSize="12" FontFamily="Xirod" Foreground="#FF0D03D6" Margin="0,2,0,0"/>
+                    <Label Content="Online:" FontSize="14" FontFamily="Crysis" Foreground="White"/>
+                    <TextBlock x:Name="OnlineCounter" Text="{Binding CurrentlyOnline}" VerticalAlignment="Center" FontSize="12" FontFamily="Xirod" Foreground="#FF0380D6" Margin="0,2,0,0" />
                 </StackPanel>
                 <TextBlock x:Name="DetectionBlock" VerticalAlignment="Bottom" FontSize="14" Text="{Binding DetectionChance}" HorizontalAlignment="Right" FontFamily="Xirod" Margin="0,0,15,10"/>
             </Grid>
 
             <!-- Triggerbot -->
-            <Grid x:Name="TriggerbotGrid" Grid.Column="1" Style="{StaticResource Color}" Visibility="Hidden">
+            <Grid x:Name="TriggerbotGrid" Grid.Column="1" Visibility="Hidden">
+                <Grid.Background>
+                    <ImageBrush ImageSource="Pictures/background.png" Stretch="Uniform"/>
+                </Grid.Background>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="1*"/>
                     <RowDefinition Height="1*"/>
@@ -155,9 +158,9 @@
                 </Grid.RowDefinitions>
                 
                 <StackPanel Orientation="Horizontal" Margin="15" VerticalAlignment="Bottom">
-                    <Label Content="Reaction time: " FontFamily="Xirod"/>
+                    <Label Content="Reaction time: " FontFamily="Xirod" Foreground="White"/>
                     <TextBlock x:Name="ReactionTimeTextblock" Text="{Binding ReactionTime}" FontFamily="Xirod" VerticalAlignment="Center"/>
-                    <TextBlock Text=" ms" FontFamily="Xirod" VerticalAlignment="Center"/>
+                    <TextBlock Text=" ms" FontFamily="Xirod" VerticalAlignment="Center" Foreground="White"/>
                 </StackPanel>
                 <Slider x:Name="ReactionTimeSlider" Foreground="#FFDC0F0F" Maximum="50" TickPlacement="BottomRight" Grid.Row="1" Margin="20,20,0,0" Width="250" HorizontalAlignment="Left" ValueChanged="ReactionTimeSlider_ValueChanged"/>
                 <GroupBox Grid.Row="2" Margin="15" Header="Allowed Weapons" FontWeight="Bold" Foreground="#FFDE1414" BorderBrush="#FF009EFD" BorderThickness="2">
@@ -169,30 +172,30 @@
                         <StackPanel Grid.Column="0" Margin="15">
                             <StackPanel Orientation="Horizontal">
                                 <CheckBox x:Name="PistolsCheckbox" Width="16" Height="16" VerticalAlignment="Center" Click="PistolsCheckbox_Click"/>
-                                <Label Content="Pistols"/>
+                                <Label Content="Pistols" Foreground="White"/>
                             </StackPanel>
                             <StackPanel Orientation="Horizontal">
                                 <CheckBox x:Name="AWPCheckbox" Width="16" Height="16" VerticalAlignment="Center" Click="AWPCheckbox_Click"/>
-                                <Label Content="AWP"/>
+                                <Label Content="AWP" Foreground="White"/>
                             </StackPanel>
                             <StackPanel Orientation="Horizontal">
                                 <CheckBox x:Name="ShotgunsCheckBox" Width="16" Height="16" VerticalAlignment="Center" Click="ShotgunsCheckBox_Click"/>
-                                <Label Content="Shotguns"/>
+                                <Label Content="Shotguns" Foreground="White"/>
                             </StackPanel>  
                         </StackPanel>
 
                         <StackPanel Grid.Column="1" Margin="15">
                             <StackPanel Orientation="Horizontal">
                                 <CheckBox x:Name="RiflesCheckbox" Width="16" Height="16" VerticalAlignment="Center" Click="RiflesCheckbox_Click"/>
-                                <Label Content="Rifles"/>
+                                <Label Content="Rifles" Foreground="White"/>
                             </StackPanel>
                             <StackPanel Orientation="Horizontal">
                                 <CheckBox x:Name="SMGsCheckbox" Width="16" Height="16" VerticalAlignment="Center" Click="SMGsCheckbox_Click"/>
-                                <Label Content="SMGs"/>
+                                <Label Content="SMGs" Foreground="White"/>
                             </StackPanel>
                             <StackPanel Orientation="Horizontal">
                                 <CheckBox x:Name="NoobsCheckbox" Width="16" Height="16" VerticalAlignment="Center" Click="NoobsCheckbox_Click"/>
-                                <Label Content="Guns for noobs"/>
+                                <Label Content="Guns for noobs" Foreground="White"/>
                             </StackPanel>
                         </StackPanel>
                     </Grid>                    
@@ -201,7 +204,10 @@
 
             
             <!--Wallhack-->
-            <Grid x:Name="WallhackGrid" Grid.Column="1" Style="{StaticResource Color}" Visibility="Hidden">
+            <Grid x:Name="WallhackGrid" Grid.Column="1" Visibility="Hidden">
+                <Grid.Background>
+                    <ImageBrush ImageSource="Pictures/background.png" Stretch="Uniform"/>
+                </Grid.Background>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition/>
                     <ColumnDefinition/>
@@ -227,12 +233,12 @@
                 <Slider x:Name="BlueFriendSlider" Style="{StaticResource ForColor}" Grid.Row="3" Grid.Column="1" Foreground="Blue" ValueChanged="BlueFriendSlider_ValueChanged"/>
 
                 <StackPanel Orientation="Horizontal" Grid.Row="4" VerticalAlignment="Center" HorizontalAlignment="Center">
-                    <Label Content="Color presentation: "/>
+                    <Label Content="Color presentation: " Foreground="White"/>
                     <Rectangle x:Name="EnemyRect" Width="30" Height="30" Fill="{Binding EnemyColorPresentation}"/>
                 </StackPanel>
                 
                 <StackPanel Orientation="Horizontal" Grid.Row="4" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Center">
-                    <Label Content="Color presentation: "/>
+                    <Label Content="Color presentation: " Foreground="White"/>
                     <Rectangle x:Name="FriendRect" Width="30" Height="30" Fill="{Binding FriendColorPresentation}"/>
                 </StackPanel>
 
@@ -240,7 +246,10 @@
             
             
                 <!--Other part -->
-            <Grid x:Name="OtherGrid" Grid.Column="1" Style="{StaticResource Color}" Visibility="Hidden">
+            <Grid x:Name="OtherGrid" Grid.Column="1"  Visibility="Hidden">
+                <Grid.Background>
+                    <ImageBrush ImageSource="Pictures/background.png" Stretch="Uniform"/>
+                </Grid.Background>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="1*"/>
                     <ColumnDefinition Width="5*"/>
@@ -266,7 +275,10 @@
 
 
             <!--Settings -->
-            <Grid x:Name="SettingsGrid" Grid.Column="1" Style="{StaticResource Color}" Visibility="Hidden" >
+            <Grid x:Name="SettingsGrid" Grid.Column="1" Visibility="Hidden" >
+                <Grid.Background>
+                    <ImageBrush ImageSource="Pictures/background.png" Stretch="Uniform"/>
+                </Grid.Background>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="1*"/>
                     <ColumnDefinition Width="1*"/>

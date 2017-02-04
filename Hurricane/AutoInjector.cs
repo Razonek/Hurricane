@@ -8,6 +8,9 @@ using System.Threading;
 
 namespace Hurricane
 {
+    /// <summary>
+    /// Automatic injector
+    /// </summary>
     public static class AutoInjector
     {
         public static bool Injected { get; set; }
@@ -17,9 +20,11 @@ namespace Hurricane
 
 
 
+        /// <summary>
+        /// Automatic inject and if game will be closed auto re-inject
+        /// </summary>
         public static void Inject()
-        {
-            
+        {            
             while (MainWindow.InjectorThread)
             {
                 if (!Injected)

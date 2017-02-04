@@ -8,6 +8,9 @@ using System.Windows;
 
 namespace Hurricane
 {
+    /// <summary>
+    /// Container for game offsets, setting offsets from file
+    /// </summary>
     public static class Offsets
     {
 
@@ -36,13 +39,11 @@ namespace Hurricane
         private static string path = Path.Combine(Environment.CurrentDirectory, dir, "Offsets.txt");
 
 
-
+        ///<summary>
+        /// Loading offsets from txt file, setting them to local variables
+        ///</summary>
         public static void LoadOffsetsFromFile()
-        {
-
-            ///<summary>
-            /// Loading offsets from txt file, setting them to local variables
-            ///</summary>
+        {            
 
 
             offset.Clear();
@@ -114,14 +115,12 @@ namespace Hurricane
 
 
 
-
+        ///<summary>
+        /// Setting list of offsets what we expect inside file
+        ///</summary>
         private static void SetExpectedOffsets()
         {
-
-            ///<summary>
-            /// Setting list of offsets what we expect inside file
-            ///</summary>
-
+             
             expectedOffset.Clear();
             expectedOffset.Add("m_fAccuracyPenalty");
             expectedOffset.Add("m_iWeaponID");
@@ -141,6 +140,13 @@ namespace Hurricane
             expectedOffset.Add("m_fFlags");            
         }
 
+        /// <summary>
+        /// Simple getting part of string by extracting what we need between two char arrays
+        /// </summary>
+        /// <param name="strSource"> Input string</param>
+        /// <param name="strStart"> First char </param>
+        /// <param name="strEnd"> Last char </param>
+        /// <returns> value between last two params as string </returns>
         private static string getBetween(string strSource, string strStart, string strEnd) 
         {
             int Start, End;

@@ -8,8 +8,14 @@ using System.Windows.Controls;
 
 namespace Hurricane
 {
+    /// <summary>
+    /// Our settings will be saved...
+    /// </summary>
     public static class Settings
     {
+        /// <summary>
+        /// Saving all aplication settings like slider values, bind keys, etc.
+        /// </summary>
         public static void SaveSettings()
         {
             // Bind keys 
@@ -50,6 +56,9 @@ namespace Hurricane
             Properties.Settings.Default.Save();
         }
 
+        /// <summary>
+        /// Loading at startup our previous settings
+        /// </summary>
         public static void LoadSettings()
         {
             // Setting bind keys

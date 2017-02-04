@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace Hurricane
 {
+    /// <summary>
+    /// Here are variables which access two threads at one time, no dispatchers or locks 
+    /// </summary>
     public static class ThreadValues
     {
         public static bool BunnyHop { get; set; }
