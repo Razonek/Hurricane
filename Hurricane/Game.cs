@@ -52,5 +52,12 @@ namespace Hurricane
             value = BitConverter.GetBytes(Value);
             WriteProcessMemory(AutoInjector.GameHandle, Offset, value, 4, 0);
         }
+
+        public static void WriteBool(bool Value, int Offset)
+        {
+            //byte[] value = new byte[1];
+            var value = BitConverter.GetBytes(Value);
+            WriteProcessMemory(AutoInjector.GameHandle, Offset, value, value.Length, 0);
+        }
     }
 }

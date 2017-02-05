@@ -80,6 +80,7 @@ namespace Hurricane
             ((MainWindow)Application.Current.MainWindow).BlueFriendSlider.Value = Properties.Settings.Default.BlueFriend;
             ((MainWindow)Application.Current.MainWindow).FriendlyWallhackCheckbox.IsChecked = Properties.Settings.Default.FriendlyWallhack;
             ((MainWindow)Application.Current.MainWindow).FriendlyWallhack = Properties.Settings.Default.FriendlyWallhack;
+            ThreadValues.FriendlyWallhack = Properties.Settings.Default.FriendlyWallhack;
 
             // Setting allowed weapons in triggerbot
             ((MainWindow)Application.Current.MainWindow).PistolsCheckbox.IsChecked = Properties.Settings.Default.AllowedPistols;
