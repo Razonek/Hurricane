@@ -24,9 +24,12 @@ namespace Hurricane
     /// Meybe:
     /// Directx Hook.
     /// 
-    /// 
-    /// C#,MySQL Developer: Razonek
-    /// PHP Developer: Rolowy
+    /// //////////////////////////////////////
+    ///                                     //
+    ///     C#, MySQL Developer: Razonek    //
+    ///     PHP Developer: Rolowy           //
+    ///                                     //
+    /// //////////////////////////////////////
     /// </summary>    
     public partial class MainWindow : Window, INotifyPropertyChanged
     {
@@ -34,7 +37,9 @@ namespace Hurricane
         SolidColorBrush CustomBlue = new SolidColorBrush(Color.FromRgb((byte)0, (byte)122, (byte)204));
         private Tuple<int, string> serverData;
         DispatcherTimer Update = new DispatcherTimer();
+        DispatcherTimer PressingBind = new DispatcherTimer();
         Connection ServerSide = new Connection();
+        Triggerbot Assistance = new Triggerbot();
         
 
 
@@ -83,6 +88,7 @@ namespace Hurricane
             private set
             {
                 _ToggleTriggerbot = value;
+                ThreadValues.Triggerbot = value;
                 if (value == true)
                     ToggleTriggerbotButton.BorderBrush = Brushes.Lime;
                 else
@@ -98,6 +104,7 @@ namespace Hurricane
             private set
             {
                 _ToggleWallhack = value;
+                ThreadValues.Wallhack = value;
                 if (value == true)
                     ToggleWallhackButton.BorderBrush = Brushes.Lime;
                 else
@@ -113,6 +120,7 @@ namespace Hurricane
             private set
             {
                 _ToggleNoFlash = value;
+                ThreadValues.NoFlash = value;
                 if (value == true)
                     ToggleNoFlashButton.BorderBrush = Brushes.Lime;
                 else
@@ -324,6 +332,8 @@ namespace Hurricane
         public static bool InjectorThread { get; private set; }
         Thread ThreadInjector;
         Thread ThreadBunnyHop;
+        Thread ThreadWeaponAssistance;
+        Thread ThreadESP;
 
         #endregion
 
@@ -335,9 +345,15 @@ namespace Hurricane
             Offsets.LoadOffsetsFromFile();                                         // Loading offsets from file
             this.DataContext = this;                                               // UI Bindings
             KeyDown += new KeyEventHandler(KeyPressKeyBind);                       // Key press event, used for binding keys
+
             Update.Interval = new TimeSpan(0, 1, 0);                               // Update timer, once per minute taking info from server
             Update.Tick += new EventHandler(Update_tick);
             Update.Start();
+
+            PressingBind.Interval = new TimeSpan(0, 0, 0, 0, 5);
+            PressingBind.Tick += new EventHandler(CheckBindPress);
+            PressingBind.Start();
+
             ServerSide.ServerInfo(Connection.ConnectionType.Login);                // Adding one player to counter
             serverData = Parser.ParseResponse(ServerSide.ServerInfo(Connection.ConnectionType.Status)); // Getting current status
             CurrentlyOnline = serverData.Item1;                                    // Setting count of online people
@@ -347,12 +363,14 @@ namespace Hurricane
             InjectorThread = true;
             ThreadInjector.Start();
 
-            
+            ThreadValues.ESP = true;
+            ESP ESPerception = new ESP();
+            ThreadESP = new Thread(ESPerception.VisualFX);
+            ThreadESP.Start();
 
-
-
-
-
+            ThreadValues.WeaponSupport = true;
+            ThreadWeaponAssistance = new Thread(Assistance.WeaponAssistance);
+            ThreadWeaponAssistance.Start();
 
         }
 
@@ -370,6 +388,42 @@ namespace Hurricane
         #endregion
 
 
+        #region Checking bind keys
+        private void CheckBindPress(object sender, EventArgs e)
+        {
+            if(IsButtonBindingUnderEdit == false)
+            {
+                if (Game.GetAsyncKeyState(TriggerbotToggleBindKey) != 0)
+                {
+                    Dispatcher.BeginInvoke(DispatcherPriority.Background, new Action(() =>
+                    {
+                        ToggleTriggerbotButton.RaiseEvent(new RoutedEventArgs(Button.ClickEvent));
+                    }));
+                    Thread.Sleep(150);
+                }
+
+                if (Game.GetAsyncKeyState(WallhackToggleBindKey) != 0)
+                {
+                    Dispatcher.BeginInvoke(DispatcherPriority.Background, new Action(() =>
+                    {
+                        ToggleWallhackButton.RaiseEvent(new RoutedEventArgs(Button.ClickEvent));
+                    }));
+                    Thread.Sleep(150);
+                }
+
+                if (Game.GetAsyncKeyState(NoFlashToggleBindKey) != 0)
+                {
+                    Dispatcher.BeginInvoke(DispatcherPriority.Background, new Action(() =>
+                    {
+                        ToggleNoFlashButton.RaiseEvent(new RoutedEventArgs(Button.ClickEvent));
+                    }));
+                    Thread.Sleep(150);
+                }
+            }
+            
+        }
+        #endregion
+
         /// <summary>
         /// Custom WindowBar and his handling
         /// </summary>        
@@ -380,11 +434,15 @@ namespace Hurricane
             ServerSide.ServerInfo(Connection.ConnectionType.Logout);
             InjectorThread = false;
             ThreadValues.Triggerbot = false;
-            ThreadValues.Wallhack = false;
-            ThreadValues.NoFlash = false;
+            ThreadValues.ESP = false;
             ThreadValues.BunnyHop = false;
+            ThreadValues.WeaponSupport = false;
+            ThreadValues.NoFlash = false;
+            ThreadValues.Wallhack = false;
             Update.Stop();
-            this.Close();
+            PressingBind.Stop();
+            ThreadWeaponAssistance.Abort();
+            Application.Current.Shutdown();
         }
 
         private void MinimizeWindow_Click(object sender, RoutedEventArgs e)
@@ -406,11 +464,15 @@ namespace Hurricane
         private void ToggleTriggerbotButton_Click(object sender, RoutedEventArgs e)
         {
             if (ToggleTriggerbot)
-                ToggleTriggerbot = false;
-            else
             {
+                ToggleTriggerbot = false;
+                ThreadValues.Triggerbot = false;
+            }
                 
+            else
+            {                
                 ToggleTriggerbot = true;
+                ThreadValues.Triggerbot = true;                
             }
                 
         }
@@ -418,17 +480,32 @@ namespace Hurricane
         private void ToggleWallhackButton_Click(object sender, RoutedEventArgs e)
         {
             if (ToggleWallhack)
+            {
                 ToggleWallhack = false;
+                ThreadValues.Wallhack = false;
+            }
+
             else
+            {
                 ToggleWallhack = true;
+                ThreadValues.Wallhack = true;
+            }
+                
         }
 
         private void ToggleNoFlashButton_Click(object sender, RoutedEventArgs e)
         {
             if (ToggleNoFlash)
+            {
                 ToggleNoFlash = false;
+                ThreadValues.NoFlash = false;
+            }                
+
             else
+            {
                 ToggleNoFlash = true;
+                ThreadValues.NoFlash = true;                
+            }
         }
 
         private void ToggleBunnyhopButton_Click(object sender, RoutedEventArgs e)
@@ -506,55 +583,102 @@ namespace Hurricane
         private void ReactionTimeSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
             ReactionTime = (int)ReactionTimeSlider.Value;
+            ThreadValues.ReactionTime = ReactionTime;
         }
 
 
         private void NoobsCheckbox_Click(object sender, RoutedEventArgs e)
         {
             if (NoobsCheckbox.IsChecked == true)
+            {
                 AllowedNoobsWeapons = true;
+                ThreadValues.NoobWeapons = true;
+            }               
+
             else
+            {
                 AllowedNoobsWeapons = false;
+                ThreadValues.NoobWeapons = false;
+            }
+                
         }
 
         private void SMGsCheckbox_Click(object sender, RoutedEventArgs e)
         {
             if (SMGsCheckbox.IsChecked == true)
+            {
                 AllowedSMGs = true;
+                ThreadValues.SMGs = true;
+            }
+                
             else
+            {
                 AllowedSMGs = false;
+                ThreadValues.SMGs = false;
+            }
+                
         }
 
         private void RiflesCheckbox_Click(object sender, RoutedEventArgs e)
         {
             if (RiflesCheckbox.IsChecked == true)
+            {
                 AllowedRifles = true;
+                ThreadValues.Rifles = true;
+            }
+                
             else
+            {
                 AllowedRifles = false;
+                ThreadValues.Rifles = false;
+            }
+                
         }
 
         private void ShotgunsCheckBox_Click(object sender, RoutedEventArgs e)
         {
             if (ShotgunsCheckBox.IsChecked == true)
+            {
                 AllowedShotguns = true;
+                ThreadValues.Shotguns = true;
+            }
             else
+            {
                 AllowedShotguns = false;
+                ThreadValues.Shotguns = false;
+            }
+                
         }
 
         private void AWPCheckbox_Click(object sender, RoutedEventArgs e)
         {
             if (AWPCheckbox.IsChecked == true)
+            {
                 AllowedAWP = true;
+                ThreadValues.AWP = true;
+            }
+
             else
+            {
                 AllowedAWP = false;
+                ThreadValues.AWP = false;
+            }
+                
         }
 
         private void PistolsCheckbox_Click(object sender, RoutedEventArgs e)
         {
             if (PistolsCheckbox.IsChecked == true)
+            {
                 AllowedPistols = true;
+                ThreadValues.Pistols = true;
+            }
+
             else
+            {
                 AllowedPistols = false;
+                ThreadValues.Pistols = false;
+            }
         }
         #endregion
 
@@ -565,31 +689,37 @@ namespace Hurricane
         private void RedEnemySlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
             RedEnemy = (float)RedEnemySlider.Value;
+            ThreadValues.EnemyRed = (float)RedEnemySlider.Value;
         }
 
         private void GreenEnemySlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
             GreenEnemy = (float)GreenEnemySlider.Value;
+            ThreadValues.EnemyGreen = (float)GreenEnemySlider.Value;
         }
 
         private void BlueEnemySlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
             BlueEnemy = (float)BlueEnemySlider.Value;
+            ThreadValues.EnemyBlue = (float)BlueEnemySlider.Value;
         }
 
         private void RedFriendSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
             RedFriend = (float)RedFriendSlider.Value;
+            ThreadValues.FriendRed = (float)RedFriendSlider.Value;
         }
 
         private void GreenFriendSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
             GreenFriend = (float)GreenFriendSlider.Value;
+            ThreadValues.FriendGreen = (float)GreenFriendSlider.Value;
         }
 
         private void BlueFriendSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
             BlueFriend = (float)BlueFriendSlider.Value;
+            ThreadValues.FriendBlue = (float)BlueFriendSlider.Value;
         }
         #endregion
 
@@ -600,25 +730,47 @@ namespace Hurricane
         private void QuickScopeCheckbox_Click(object sender, RoutedEventArgs e)
         {
             if (QuickScopeCheckbox.IsChecked == true)
+            {
                 AllowedQuickScope = true;
+                ThreadValues.QuickScope = true;
+            }
+
             else
+            {
                 AllowedQuickScope = false;
+                ThreadValues.QuickScope = false;
+            }
+                
         }
 
         private void ReloadChangeCheckbox_Click(object sender, RoutedEventArgs e)
         {
             if (ReloadChangeCheckbox.IsChecked == true)
+            {
                 AllowedSwapWeapon = true;
+                ThreadValues.WeaponChangeAtReload = true;
+            }
+
             else
+            {
                 AllowedSwapWeapon = false;
+                ThreadValues.WeaponChangeAtReload = false;
+            }
         }
 
         private void AccuracyImproveCheckbox_Click(object sender, RoutedEventArgs e)
         {
             if (AccuracyImproveCheckbox.IsChecked == true)
+            {
                 AllowedAimImprove = true;
+                ThreadValues.FireControl = true;
+            }
+
             else
+            {
                 AllowedAimImprove = false;
+                ThreadValues.FireControl = false;
+            }
         }
         #endregion
 
@@ -651,7 +803,7 @@ namespace Hurricane
                         BunnyhopBindName = e.Key.ToString();
                         BunnyhopBindKey = KeyInterop.VirtualKeyFromKey(e.Key);
                         break;
-                }
+                }                
                 IsButtonBindingUnderEdit = false;
             }
         }
@@ -703,9 +855,17 @@ namespace Hurricane
         private void FriendlyWallhackCheckbox_Click(object sender, RoutedEventArgs e)
         {
             if (FriendlyWallhackCheckbox.IsChecked == true)
+            {
                 FriendlyWallhack = true;
+                ThreadValues.FriendlyWallhack = true;
+            }
+                
             else
+            {
                 FriendlyWallhack = false;
+                ThreadValues.FriendlyWallhack = false;
+            }
+                
         }
 
         private void GetOffsetsButton_Click(object sender, RoutedEventArgs e)

@@ -46,6 +46,11 @@ namespace Hurricane
             return BitConverter.ToInt32(buffer, 0);
         }
 
+        /// <summary>
+        /// Write to process memory float value
+        /// </summary>
+        /// <param name="Value"> What we want to write </param>
+        /// <param name="Offset"> Where we want to write </param>
         public static void WriteFloat(float Value, int Offset)
         {
             byte[] value = new byte[4];
@@ -53,9 +58,13 @@ namespace Hurricane
             WriteProcessMemory(AutoInjector.GameHandle, Offset, value, 4, 0);
         }
 
+        /// <summary>
+        /// Write to process memory bool value
+        /// </summary>
+        /// <param name="Value"> What we want to write (true/false) </param>
+        /// <param name="Offset"> Where we want to write </param>
         public static void WriteBool(bool Value, int Offset)
-        {
-            //byte[] value = new byte[1];
+        {            
             var value = BitConverter.GetBytes(Value);
             WriteProcessMemory(AutoInjector.GameHandle, Offset, value, value.Length, 0);
         }

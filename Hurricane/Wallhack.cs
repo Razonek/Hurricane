@@ -7,12 +7,17 @@ using System.Windows;
 
 namespace Hurricane
 {
+    /// <summary>
+    /// Simple wallhack implementation, working on glow players
+    /// </summary>
     public class Wallhack : Player
     {
         ColorValues Enemy = new ColorValues(1.0f);
         ColorValues Friend = new ColorValues(1.0f);
 
-
+        /// <summary>
+        /// Container for rgb values, one instance per team
+        /// </summary>
         struct ColorValues
         {
 
@@ -31,19 +36,24 @@ namespace Hurricane
         }
 
         
-
+        /// <summary>
+        /// Checking selected color on sliders for each team
+        /// </summary>
         private void CheckColor()
         {
             
-            Enemy.Red = (float)ThreadValues.EnemyRed / 255;
-            Enemy.Green = (float)ThreadValues.EnemyGreen / 255;
-            Enemy.Blue = (float)ThreadValues.EnemyBlue / 255;
+            Enemy.Red = ThreadValues.EnemyRed / 255;
+            Enemy.Green = ThreadValues.EnemyGreen / 255;
+            Enemy.Blue = ThreadValues.EnemyBlue / 255;
 
-            Friend.Red = (float)ThreadValues.FriendRed / 255;
-            Friend.Green = (float)ThreadValues.FriendGreen / 255;
-            Friend.Blue = (float)ThreadValues.FriendBlue / 255;
+            Friend.Red = ThreadValues.FriendRed / 255;
+            Friend.Green = ThreadValues.FriendGreen / 255;
+            Friend.Blue = ThreadValues.FriendBlue / 255;
         }
 
+        /// <summary>
+        /// Glow contour of player with selected color / per team
+        /// </summary>
         public void GlowPlayers()
         {
             CheckColor();
@@ -83,7 +93,7 @@ namespace Hurricane
                     }
                 }
 
-            }
+            }            
         }   
 
 

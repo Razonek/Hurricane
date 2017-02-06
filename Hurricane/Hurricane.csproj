@@ -58,11 +58,16 @@
     <Compile Include="AutoInjector.cs" />
     <Compile Include="BunnyHop.cs" />
     <Compile Include="Connection.cs" />
+    <Compile Include="ESP.cs" />
     <Compile Include="Game.cs" />
+    <Compile Include="NoFlash.cs" />
     <Compile Include="Offsets.cs" />
     <Compile Include="Parser.cs" />
+    <Compile Include="Player.cs" />
     <Compile Include="Settings.cs" />
     <Compile Include="ThreadValues.cs" />
+    <Compile Include="Triggerbot.cs" />
+    <Compile Include="Wallhack.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

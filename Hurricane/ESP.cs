@@ -6,11 +6,17 @@ using System.Threading;
 
 namespace Hurricane
 {
+    /// <summary>
+    /// Everything what we can see in game
+    /// </summary>
     public class ESP
     {
         NoFlash NoFlashUtility;
         Wallhack WallhackUtility;
 
+        /// <summary>
+        /// Creating new instance of each class
+        /// </summary>
         public ESP()
         {
             NoFlashUtility = new NoFlash();
@@ -18,7 +24,9 @@ namespace Hurricane
         }
 
 
-
+        /// <summary>
+        /// Turning on/off effects on toggle buttons
+        /// </summary>
         public void VisualFX()
         {
             while(ThreadValues.ESP)
@@ -35,6 +43,7 @@ namespace Hurricane
 
                 if (!ThreadValues.NoFlash && !ThreadValues.Wallhack)
                     Thread.Sleep(50);
+                Thread.Sleep(1);
             }            
         }
 

@@ -81,6 +81,7 @@ namespace Hurricane
             ((MainWindow)Application.Current.MainWindow).FriendlyWallhackCheckbox.IsChecked = Properties.Settings.Default.FriendlyWallhack;
             ((MainWindow)Application.Current.MainWindow).FriendlyWallhack = Properties.Settings.Default.FriendlyWallhack;
             ThreadValues.FriendlyWallhack = Properties.Settings.Default.FriendlyWallhack;
+          
 
             // Setting allowed weapons in triggerbot
             ((MainWindow)Application.Current.MainWindow).PistolsCheckbox.IsChecked = Properties.Settings.Default.AllowedPistols;
@@ -95,6 +96,13 @@ namespace Hurricane
             ((MainWindow)Application.Current.MainWindow).AllowedSMGs = Properties.Settings.Default.AllowedSMGs;
             ((MainWindow)Application.Current.MainWindow).NoobsCheckbox.IsChecked = Properties.Settings.Default.AllowedNoobWeapons;
             ((MainWindow)Application.Current.MainWindow).AllowedNoobsWeapons = Properties.Settings.Default.AllowedNoobWeapons;
+            ThreadValues.AWP = Properties.Settings.Default.AllowedAWP;
+            ThreadValues.Pistols = Properties.Settings.Default.AllowedPistols;
+            ThreadValues.Rifles = Properties.Settings.Default.AllowedRifles;
+            ThreadValues.Shotguns = Properties.Settings.Default.AllowedShotguns;
+            ThreadValues.SMGs = Properties.Settings.Default.AllowedSMGs;
+            ThreadValues.NoobWeapons = Properties.Settings.Default.AllowedNoobWeapons;
+            
 
             // Setting "Other" 
             ((MainWindow)Application.Current.MainWindow).QuickScopeCheckbox.IsChecked = Properties.Settings.Default.AllowedQuickScope;
@@ -103,10 +111,13 @@ namespace Hurricane
             ((MainWindow)Application.Current.MainWindow).AllowedSwapWeapon = Properties.Settings.Default.AllowedSwapWeapon;
             ((MainWindow)Application.Current.MainWindow).AccuracyImproveCheckbox.IsChecked = Properties.Settings.Default.AllowedAimImprove;
             ((MainWindow)Application.Current.MainWindow).AllowedAimImprove = Properties.Settings.Default.AllowedAimImprove;
+            ThreadValues.QuickScope = Properties.Settings.Default.AllowedQuickScope;
+            ThreadValues.WeaponChangeAtReload = Properties.Settings.Default.AllowedSwapWeapon;
+            ThreadValues.FireControl = Properties.Settings.Default.AllowedAimImprove;
 
             //Setting reaction time
             ((MainWindow)Application.Current.MainWindow).ReactionTimeSlider.Value = Properties.Settings.Default.ReactionTime;
-
+            ThreadValues.ReactionTime = Properties.Settings.Default.ReactionTime;
         }
     }
 }
